@@ -5,9 +5,16 @@ const Manager = use('OnFire/Managers/UserManager')
 
 class UserController {
 
-  constructor() {
+  constructor(Repository, Manager) {
     this.repository = Repository
     this.manager = Manager
+  }
+
+  static get inject() {
+    return [
+      Repository,
+      Manager
+    ]
   }
 
   * index(request, response) {
@@ -20,7 +27,16 @@ class UserController {
   }
 
   * store(request, response) {
-    //
+    console.log(this.manager, this.repository)
+    let data =  Object.assign(
+                  request.all(),
+                  {
+                    'profile_picture': request.file('profile_picture').toJSON().size ?
+                                       request.file('profile_picture') :
+                                       null
+                  }
+                )
+    return response.json(this.manager.save(data))
   }
 
   * show(request, response) {

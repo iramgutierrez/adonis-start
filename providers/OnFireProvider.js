@@ -15,9 +15,18 @@ class OnFireProvider extends ServiceProvider {
                                     'Entities/**.js',
                                     'Validators/**.js',
                                     'Repositories/**.js',
-                                    'Managers/**.js'
+                                    'Managers/**.js',
                                   ]
                                 )
+
+    const OnFireControllers = readDirFiles
+                                .readSync(
+                                  path.join(__dirname, '../app/Http'),
+                                  [
+                                    'Controllers/**.js'
+                                  ]
+                                )
+    Object.assign(OnFireFiles, OnFireControllers)
 
     OnFireFiles.forEach( f => {
       let layers = f.split('/')
@@ -26,6 +35,11 @@ class OnFireProvider extends ServiceProvider {
 
       let nameSpace =  `OnFire/${layer}/${name}`.replace('.js', '')
       let pathModule = path.join(__dirname, `../app/OnFire/${layer}/${name}`).replace('.js', '')
+
+      if(layer == 'Controllers') {
+        nameSpace =  `App/Http/${layer}/${name}`.replace('.js', '')
+        pathModule = path.join(__dirname, `../app/Http/${layer}/${name}`).replace('.js', '')
+      }
 
       this.app.bind(nameSpace, function () {
 
@@ -41,6 +55,8 @@ class OnFireProvider extends ServiceProvider {
       })
 
     })
+
+
   }
 }
 

@@ -17,7 +17,7 @@ class UserManager {
     this.validator = Validator
   }
 
-  * save() {
+  * save(data) {
     return yield this.entity.all()
   }
 

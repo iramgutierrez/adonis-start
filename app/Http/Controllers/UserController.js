@@ -27,7 +27,7 @@ class UserController {
   }
 
   * store(request, response) {
-    console.log(this.manager, this.repository)
+
     let data =  Object.assign(
                   request.all(),
                   {
@@ -36,7 +36,7 @@ class UserController {
                                        null
                   }
                 )
-    return response.json(this.manager.save(data))
+    return response.json(yield this.manager.save(data))
   }
 
   * show(request, response) {

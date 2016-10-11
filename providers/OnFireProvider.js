@@ -8,7 +8,7 @@ class OnFireProvider extends ServiceProvider {
 
   * register () {
 
-    const OnFireFiles = readDirFiles
+    let OnFireFiles = readDirFiles
                                 .readSync(
                                   path.join(__dirname, '../app/OnFire'),
                                   [
@@ -26,7 +26,7 @@ class OnFireProvider extends ServiceProvider {
                                     'Controllers/**.js'
                                   ]
                                 )
-    Object.assign(OnFireFiles, OnFireControllers)
+    OnFireFiles = OnFireFiles.concat(OnFireControllers)
 
     OnFireFiles.forEach( f => {
       let layers = f.split('/')

@@ -28,7 +28,8 @@
     "youch": "^1.0.1"
   },
   "autoload": {
-    "App": "./app"
+    "App": "./app",
+    "OnFire": "./app/OnFire"
   },
   "devDependencies": {
     "nodemon": "^1.9.1"

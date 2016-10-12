@@ -14,6 +14,7 @@ class UsersSchema extends Schema {
       table.string('gender').nullable(false)
       table.date('birthdate').nullable(false)
       table.string('profile_picture')
+      table.boolean('welcome_email').nullable(false).default(0)
       table.timestamps()
       table.softDeletes()
     })

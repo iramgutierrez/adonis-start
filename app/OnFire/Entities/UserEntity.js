@@ -4,7 +4,7 @@ const Lucid = use('Lucid')
 
 class UserEntity extends Lucid {
 
-  static get fillable() {
+  get fillable() {
     return [
       'name',
       'lastname',
@@ -12,7 +12,19 @@ class UserEntity extends Lucid {
       'password',
       'gender',
       'birthdate',
-      'profile_picture'
+      'welcome_email'
+    ]
+  }
+
+  get fillableFiles() {
+    return [
+      'profile_picture',
+    ]
+  }
+
+  static get hidden() {
+    return [
+      'password', 'deleted_at'
     ]
   }
 
@@ -22,10 +34,10 @@ class UserEntity extends Lucid {
 
   * fill(data) {
 
-    this.fillable( field => {
-      console.log(field)
-      if(data.hasOwnProperty(field)) {
+    this.fillable.forEach( field => {
 
+      if(data.hasOwnProperty(field)) {
+        this[field] = data[field]
       }
     })
   }

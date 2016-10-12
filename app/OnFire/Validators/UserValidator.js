@@ -5,6 +5,10 @@ const Entity = use('OnFire/Entities/UserEntity')
 
 class UserValidator {
 
+  constructor(Entity) {
+    this.entity = Entity
+  }
+
   static get inject() {
     return [
       Entity
@@ -18,15 +22,12 @@ class UserValidator {
       email: 'required|email|unique:users',
       password: 'required|confirmed',
       gender: 'required',
-      birthdate: 'required|date'
+      birthdate: 'required|date',
     }
   }
 
-  constructor(Entity) {
-    this.entity = Entity
-  }
-
   * isValid(data) {
+    this.errors = {}
 
     let isValid = yield Validator.validateAll(data, this.rules)
 
@@ -34,7 +35,6 @@ class UserValidator {
       this.parseErrors(isValid.messages());
       return false;
     }
-
     return true;
 
   }

@@ -2,6 +2,9 @@
 
 const Repository = use('OnFire/Repositories/UserRepository')
 const Manager = use('OnFire/Managers/UserManager')
+const Entity = use('OnFire/Entities/UserEntity')
+const InternalServerError = use('OnFire/Errors/InternalServerError')
+const BadRequestError = use('OnFire/Errors/BadRequestError')
 
 class UserController {
 
@@ -31,12 +34,21 @@ class UserController {
     let data =  Object.assign(
                   request.all(),
                   {
-                    'profile_picture': request.file('profile_picture').toJSON().size ?
+                    'profile_picture': request.file('profile_picture').clientSize() ?
                                        request.file('profile_picture') :
                                        null
                   }
                 )
-    return response.json(yield this.manager.save(data))
+    let saved = yield this.manager.save(data)
+
+    if(this.manager.errors instanceof InternalServerError) {
+      return response.internalServerError({ error: this.manager.errors.first() })
+    } else if(this.manager.errors instanceof BadRequestError) {
+      return response.badRequest(this.manager.errors.all())
+    }
+    yield this.manager.sendEmail(saved)
+
+    return response.created(saved)
   }
 
   * show(request, response) {

@@ -16,6 +16,8 @@ class OnFireProvider extends ServiceProvider {
                                     'Validators/**.js',
                                     'Repositories/**.js',
                                     'Managers/**.js',
+                                    'Tasks/**.js',
+                                    'Errors/**.js'
                                   ]
                                 )
 
@@ -45,7 +47,7 @@ class OnFireProvider extends ServiceProvider {
 
         const Module = use(pathModule)
 
-        if(layer == 'Entities') {
+        if(layer == 'Entities' || layer == 'Errors') {
           return Module
         }
 
